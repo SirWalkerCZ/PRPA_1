@@ -13,12 +13,32 @@ Vstupní i výstupní soubor jsou ukončeny znakem 0x0A, který se při výpočt
 #include <stdio.h>
 
 int main(void){
-    char symb;
+    char symb, lastSymb;
+    int symbolCount = 0;
     while (scanf("%c", &symb)<0)
     {
         if (symb >= "A"&& symb <="Z")
         {
-            /* code */
+            if (symb==lastSymb)
+            {
+                symbolCount++;               
+            }
+            else{
+                while (symbolCount > 255) //if the symbolCount is bigger then 255, write that and decrease it
+                {
+                    symbolCount = symbolCount - 255;
+                    print("%c%i", lastSymb, 255);
+                }
+                if (symbolCount==1) //if its just one symbol, write that
+                {
+                    printf("%c", lastSymb);
+                    break;
+                }                
+                //if 2 symbols = AA, else A+count
+                (symbolCount == 2) ? print("%c%c", lastSymb, lastSymb) : printf("%c%i", lastSymb, symbolCount);
+                symbolCount = 1;
+            }
+            lastSymb = symb;
         }
         else{
             ("Error: Neplatny symbol!\n");
