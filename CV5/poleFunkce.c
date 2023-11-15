@@ -15,6 +15,20 @@ void vytvor(int *pole, int velikost, int hodnota){
     }    
 }
 
+void minmax(int * pole, int * min, int * max, int velikost){
+    for (int i = 0; i < velikost; i++)
+    {
+       if (pole[i]> *max)
+       {
+        *max=pole[i];
+       }
+       if (pole[i]< *min)
+       {
+        *min=pole[i];
+       }       
+    }   
+}
+
 int main(){
     int pole[] = {2,3,4,5,6,7};
     int * p = pole;
@@ -27,5 +41,8 @@ int main(){
     vytvor(pole1, 10, 10);
     tisk(pole1, sizeof(pole1)/sizeof(int));
 
+    int min = __INT_MAX__, max = -__INT_MAX__;
+    minmax(pole, &min, &max, sizeof(pole)/sizeof(int));
+    printf("min: %i\nmax: %i", min, max);
     return 0;
 }
