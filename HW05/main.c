@@ -34,11 +34,6 @@ void drawRoof(int baseSize){
             }
             printf("X");
         }
-        for (int i = 0; i < spaceCount; i++) //prints spaces right to the roof
-        {
-            printf(" ");
-        }
-
         printf("\n");
         spaceCount--;
     }
@@ -46,32 +41,53 @@ void drawRoof(int baseSize){
 }
 
 //(workNum % 2 == 0) ? evenCount++ : oddCount++;
-void drawHouse(int width, int height)
+void drawHouse(int width, int height, int fence)
 {
     char filler = ' ';
+    int fenceWritten = 0;
+    char fenceFiller = '-';
     if (width == height) filler = '*'; // IT SHOULD START AS o BUT FOR SOME REASON THIS WORKS 
-    if (height == 0) height = width;
+    if (height == 0) height = width; //if height was not stated, its the same as the width
     
-    for (int i = 0; i < height; i++)
+    for (int i = 0; i < height; i++) //cycles through the house layers
     {
-        if (i == 0 || i+1 == height)
+        if (i == 0 || i+1 == height) //writes the top and bottom layer of the house
         {
             for (int j = 0; j < width; j++)
             {
                 printf("X");
             }
-            printf("\n");
         }
-        else{
+        else{ //writes middle layers of the house 
             for (int k = 0; k < width; k++)
             {
-                (k==0||k+1==width) ?   printf("X") : printf("%c", filler);
-                if (filler == '*') filler = 'o';
+                (k==0||k+1==width) ?   printf("X") : printf("%c", filler); //writes X at the beggining and end, otherwise writes filler
+                if (filler == '*') filler = 'o'; //swaps the fillers
                 else if (filler == 'o') filler = '*';
                                 
             }
-            printf("\n");
         }
+
+        if (fence != 0 && i >= height-fence) //decides if it should write the fence, based on if it exist and if its at the correct height
+        {
+            if (fenceWritten==0||fenceWritten==fence-1) //if its top or bottom layer, write "-"
+            {
+                fenceFiller = '-';
+            }
+            else {
+            fenceFiller = ' ';
+            }
+            char outOfNames = fenceFiller;
+            for (int l = 0; l < fence; l++)
+            {
+                printf("%c", outOfNames);
+                if (outOfNames==fenceFiller) outOfNames = '|';
+                else if(outOfNames=='|') outOfNames = fenceFiller;
+                
+            }
+            fenceWritten++;    
+        }
+        printf("\n");
     }
 }
 
@@ -81,39 +97,52 @@ int main(int argc, char *argv[]) {
 
     switch (result)
     {
-    case -1:
-        printf("Weird as fuuuck");
-        return 255;
-    case 0:
-        fprintf(stderr, "Error: Chybny vstup!");
-        return 100;
     case 1:
         if (testNumInterval(cislo)==0)
         {
-            fprintf(stderr, "Error: Vstup mimo interval!");
+            fprintf(stderr, "Error: Vstup mimo interval!\n");
             return 101;
         }
-        drawHouse(cislo, 0);
+        drawHouse(cislo, 0, 0);
         break;
     case 2:
         if (testNumInterval(cislo)==0||testNumInterval(cislo2)==0)
         {
-            fprintf(stderr, "Error: Vstup mimo interval!");
+            fprintf(stderr, "Error: Vstup mimo interval!\n");
             return 101;
         }
-        if ((cislo % 2 == 0))
+        if ((cislo % 2) == 0)
         {
-            fprintf(stderr, "Error: Sirka neni liche cislo!");
+            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
             return 102;
         }
         drawRoof(cislo);
-        drawHouse(cislo, cislo2);
+        drawHouse(cislo, cislo2, 0);
         break;
     case 3:
-        printf("\n3 cislo");
+        if (testNumInterval(cislo)==0||testNumInterval(cislo2)==0||testNumInterval(cislo3)==0)
+        {
+            fprintf(stderr, "Error: Vstup mimo interval!\n");
+            return 101;
+        }
+        if ((cislo % 2) == 0)
+        {
+            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
+            return 102;
+        }
+        if ((cislo3 % 2)!=0 || cislo3 >= cislo2) // fence cannot be odd and has to be smaller than the house height
+        {
+            fprintf(stderr, "Error: Neplatna velikost plotu!\n");
+            return 103;
+        }
+
+        drawRoof(cislo);
+        drawHouse(cislo, cislo2, cislo3);
+
         break;
     default:
-        printf("\nMoc cisel voe");
+        fprintf(stderr, "Error: Chybny vstup!\n");
+        return 100;
         break;
     }
 
