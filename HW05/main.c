@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int cislo, cislo2, cislo3;
-int result;
+int widthNum, heightNum, fenceNum;
+int result = 0;
 
 int testNumInterval(int num){    
     if (num < 70 && num > 2)
@@ -92,52 +92,57 @@ void drawHouse(int width, int height, int fence)
 }
 
 int main(int argc, char *argv[]) {
-
-    result = scanf("%i%i%i", &cislo, &cislo2, &cislo3);
-
+    if(scanf("%i", &widthNum)==1) result++;
+    else result = 0;
+    if(scanf("%i", &heightNum)==1) result++;
+    else result = 0;
+    if(scanf("%i", &fenceNum)==1) result++;
+    else result = 0;
+    //result = scanf("%i%i%i", &widthNum, &heightNum, &fenceNum);
+    //scanf() 3x místo jednou
     switch (result)
     {
     case 1:
-        if (testNumInterval(cislo)==0)
+        if (testNumInterval(widthNum)==0)
         {
             fprintf(stderr, "Error: Vstup mimo interval!\n");
             return 101;
         }
-        drawHouse(cislo, 0, 0);
+        drawHouse(widthNum, 0, 0);
         break;
     case 2:
-        if (testNumInterval(cislo)==0||testNumInterval(cislo2)==0)
+        if (testNumInterval(widthNum)==0||testNumInterval(heightNum)==0)
         {
             fprintf(stderr, "Error: Vstup mimo interval!\n");
             return 101;
         }
-        if ((cislo % 2) == 0)
+        if ((widthNum % 2) == 0)
         {
-            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
+            fprintf(stderr, "Error: Sirka neni liche widthNum!\n");
             return 102;
         }
-        drawRoof(cislo);
-        drawHouse(cislo, cislo2, 0);
+        drawRoof(widthNum);
+        drawHouse(widthNum, heightNum, 0);
         break;
     case 3:
-        if (testNumInterval(cislo)==0||testNumInterval(cislo2)==0||testNumInterval(cislo3)==0)
+        if (testNumInterval(widthNum)==0||testNumInterval(heightNum)==0||testNumInterval(fenceNum)==0)
         {
             fprintf(stderr, "Error: Vstup mimo interval!\n");
             return 101;
         }
-        if ((cislo % 2) == 0)
+        if ((widthNum % 2) == 0)
         {
-            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
+            fprintf(stderr, "Error: Sirka neni liche widthNum!\n");
             return 102;
         }
-        if ((cislo3 % 2)!=0 || cislo3 >= cislo2) // fence cannot be odd and has to be smaller than the house height
+        if ((fenceNum % 2)!=0 || fenceNum-1 >= heightNum) // fence cannot be odd and has to be smaller than the house height
         {
             fprintf(stderr, "Error: Neplatna velikost plotu!\n");
             return 103;
         }
 
-        drawRoof(cislo);
-        drawHouse(cislo, cislo2, cislo3);
+        drawRoof(widthNum);
+        drawHouse(widthNum, heightNum, fenceNum);
 
         break;
     default:

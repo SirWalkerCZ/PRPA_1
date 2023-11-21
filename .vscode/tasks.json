@@ -9,7 +9,6 @@
 				"-pedantic",
 				"-Wall",
 				"-Werror",
-				//"-Wno-error=gnu-case-range",
 				"-std=c99",
 				"-O3",
 				"-fdiagnostics-color=always",
