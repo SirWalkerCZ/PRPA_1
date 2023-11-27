@@ -77,7 +77,16 @@ void drawHouse(int width, int height, int fence)
             else {
             fenceFiller = ' ';
             }
-            char outOfNames = fenceFiller;
+            char outOfNames;
+            if ((fence % 2)==0)
+            {
+                outOfNames= fenceFiller;
+            }
+            else{
+                outOfNames = '|';
+            }
+            
+            
             for (int l = 0; l < fence; l++)
             {
                 printf("%c", outOfNames);
@@ -91,15 +100,54 @@ void drawHouse(int width, int height, int fence)
     }
 }
 
+int loadval()
+{
+    int numCount = 0;
+    result = scanf("%i", &widthNum); // scans first val
+    if (result == 1)
+    {
+        numCount++;
+        result = scanf("%i", &heightNum); // scans second val
+        if (result == 1)
+        {
+            numCount++;
+            result = scanf("%i", &fenceNum);
+            if (result == 1)
+            {
+                numCount++;
+                return numCount;
+            }
+            if (result == 0)
+            {
+                return 0;
+            }
+            if (result == -1)
+            {
+                return numCount;
+            }
+        }
+        if (result == 0)
+        {
+            return 0;
+        }
+        if (result == -1)
+        {
+            return numCount;
+        }
+    }
+    if (result == 0)
+    {
+        return 0;
+    }
+    if (result == -1)
+    {
+        return numCount;
+    }
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
-    if(scanf("%i", &widthNum)==1) result++;
-    else result = 0;
-    if(scanf("%i", &heightNum)==1) result++;
-    else result = 0;
-    if(scanf("%i", &fenceNum)==1) result++;
-    else result = 0;
-    //result = scanf("%i%i%i", &widthNum, &heightNum, &fenceNum);
-    //scanf() 3x místo jednou
+    result = loadval();
     switch (result)
     {
     case 1:
@@ -118,7 +166,7 @@ int main(int argc, char *argv[]) {
         }
         if ((widthNum % 2) == 0)
         {
-            fprintf(stderr, "Error: Sirka neni liche widthNum!\n");
+            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
             return 102;
         }
         drawRoof(widthNum);
@@ -132,10 +180,10 @@ int main(int argc, char *argv[]) {
         }
         if ((widthNum % 2) == 0)
         {
-            fprintf(stderr, "Error: Sirka neni liche widthNum!\n");
+            fprintf(stderr, "Error: Sirka neni liche cislo!\n");
             return 102;
         }
-        if ((fenceNum % 2)!=0 || fenceNum-1 >= heightNum) // fence cannot be odd and has to be smaller than the house height
+        if (fenceNum >= heightNum) // fence cannot be odd and has to be smaller than the house height
         {
             fprintf(stderr, "Error: Neplatna velikost plotu!\n");
             return 103;
