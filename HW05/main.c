@@ -127,8 +127,8 @@ int loadval()
             }
         }
         if (result == 0)
-        {
-            return 0;
+    {
+        return 0;
         }
         if (result == -1)
         {
