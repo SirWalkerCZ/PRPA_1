@@ -10,7 +10,6 @@ class TestCProgram(unittest.TestCase):
             self.assertEqual(run_c_program(input_data), expected_output)
             
 def run_c_program(input_data):
-    # Replace 'your_c_program' with the actual name of your C program executable
     command = ['./main']
     process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     stdout, stderr = process.communicate(input=input_data)
