@@ -1,65 +1,149 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-// Na standardním vstupu očekávejte číslo, které reprezentuje délku zprávy, a dvě posloupnosti znaků (texty) na samostatných řádcích. První text je zakódovaná zpráva a druhý text je nespolehlivě odposlechnutý text.
+int srovnej(char *arr1, char *arr2, int lenght)
+{
+    int pocet = 0;
 
-// Pokud na prvním řádku není číslo nebo vstupní text neodpovídá abecedě [a-zA-Z] vypíše program na standardní chybový výstup “Error: Chybny vstup!” a skončí s návratovou hodnotou 100.
-// Pokud je některý ze vstupních textů kratší, než uvádí číslo na prvním řádku souboru, program vypíše na stderr “Error: Chybna delka vstupu!” a skončí s návratovou hodnotou 101.
-// Současný výskyt obou chyb není testován.
-// Informace o chybě vypsaná na standardní chybový výstup není ukončena znakem konce řádku.
-
-void shift(const char *src, char *dst, int offset);
- 
-int compare(const char *str1, const char *str2);
-
-//10 neboli 0A
-int lenght;
-int main(){
-
-    while(scanf("%i", &lenght)>0);
-    if (lenght != (int)lenght) //nutno otestovat
-    {
-        fprintf(stderr, "Error: Chybna delka vstupu!");
-        return 101;
-    }
-    printf("%i\n", lenght);
-    
-    char text1[lenght];
-    
     for (int i = 0; i < lenght; i++)
     {
-        printf("%i", i);
-        char temp;
-        if (scanf("%c", &temp)==EOF)
+        if (arr1[i] == arr2[i])
+        {
+            pocet++;
+        }
+    }
+    return pocet;
+}
+
+void posun(char *in, char *out, int pocet)
+{
+    char newCharacter;
+
+    for (int i = 0; i < pocet; i++)
+    {
+        newCharacter = in[i] + 1;
+        if (newCharacter > 'Z' && newCharacter < 'a')
+        {
+            newCharacter = 'a';
+        }
+        else if (newCharacter > 'z')
+        {
+            newCharacter = 'A';
+        }
+
+        out[i] = newCharacter;
+    }
+}
+
+
+
+int main()
+{
+    int sizeArr = 0;
+
+
+    if (scanf("%i", &sizeArr) <= 0)
+    {
+        fprintf(stderr, "Error: Chybny vstup!");
+        return 100;
+    }
+    char inArrChar[sizeArr];
+    char decodeArrChars[sizeArr];
+    char tempArray[sizeArr];
+    char outArray[sizeArr];
+
+
+    char uselessChar;
+    int MAX = 0;
+    char input = 0;
+    int poceter = 0;
+
+
+    scanf("%c", &uselessChar);
+    //load the first array
+    while (scanf("%c", &input) > 0)
+    {
+        if (input == '\n')
+        {
+            break;
+        }
+
+        if (poceter > sizeArr)
         {
             fprintf(stderr, "Error: Chybna delka vstupu!");
             return 101;
         }
-        
-        if ((temp>= 'A' && temp <= 'Z') || (temp > 'a' && temp < 'z'))
+
+        if (input < 'A' || (input > 'Z' && input < 'a') || input > 'z')
         {
-            text1[i] = temp;
-        }
-        else{
             fprintf(stderr, "Error: Chybny vstup!");
             return 100;
         }
-        
-    }
-    
-    
-    printf("%s\n", text1);
 
-    char* text2 = NULL;
-    text2 = (char*) malloc(lenght * sizeof(char));
-    if (text2 == NULL) //v případě že je pamět plná
+        inArrChar[poceter] = input;
+        poceter++;
+    }
+
+    if (poceter < sizeArr)
     {
-        printf("Alokace se nepodařila");
-        return -1;
+        fprintf(stderr, "Error: Chybna delka vstupu!");
+        return 101;
     }
-    
-    scanf("%s", text2);  
-    printf("%s\n", text2);
 
+    //load the second array
+    input = 0; 
+    poceter = 0;
+
+    while (scanf("%c", &input) > 0)
+    {
+        if (input == '\n')
+        {
+            break;
+        }
+
+        if (poceter > sizeArr)
+        {
+            fprintf(stderr, "Error: Chybna delka vstupu!");
+            return 101;
+        }
+
+        if (input < 'A' || (input > 'Z' && input < 'a') || input > 'z')
+        {
+            fprintf(stderr, "Error: Chybny vstup!");
+            return 100;
+        }
+
+        decodeArrChars[poceter] = input;
+        poceter++;
+    }
+
+    if (poceter < sizeArr)
+    {
+        fprintf(stderr, "Error: Chybna delka vstupu!");
+        return 101;
+    }
+
+    posun(inArrChar, tempArray, sizeArr);
+
+    while (srovnej(inArrChar, tempArray, sizeArr) != sizeArr)
+    {
+        int COMMON;
+
+        posun(tempArray, tempArray, sizeArr);
+
+        COMMON = srovnej(decodeArrChars, tempArray, sizeArr);
+        if (COMMON > MAX)
+        {
+            MAX = COMMON;
+            for (int i = 0; i < sizeArr; i++)
+            {
+                outArray[i] = tempArray[i];
+            }
+        }
+    }
+    for (int i = 0; i < sizeArr; i++)
+    {
+        printf("%c", outArray[i]);
+    }
+    printf("\n");
     return 0;
 }
