@@ -8,7 +8,7 @@
 			"args": [
 				"-pedantic",
 				"-Wall",
-				//"-Werror",
+				"-Werror",
 				"-std=c99",
 				"-O3",
 				"-fdiagnostics-color=always",
