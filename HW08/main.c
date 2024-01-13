@@ -28,20 +28,31 @@ int main(){
         size++;
     }
 
+     printf("Numbers entered:\n");
+
+     for (int i = 0; i < size; i++) {
+         printf("%d\t", numbers[i]);
+     }
+
     //bubble sort
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size-1; i++)
     {
-        /* code */
+        if (numbers[i+1]<numbers[i])
+        {
+            int temp = numbers[i+1];
+            numbers[i+1] = numbers[i];
+            numbers[i] = temp;
+        }
     }
     
 
     printf("Median\n");
 
-    // printf("Numbers entered:\n");
+    printf("Numbers entered:\n");
 
-    // for (int i = 0; i < size; i++) {
-    //     printf("%d\n", numbers[i]);
-    // }
+     for (int i = 0; i < size; i++) {
+        printf("%d\t", numbers[i]);
+     }
 
     free(numbers);
 
