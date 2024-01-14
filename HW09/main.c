@@ -145,20 +145,28 @@ int main(int argc, char *argv[])
     char **leastUsedWord = malloc(wordCount*MAX_WORD_LENGTH*sizeof(char));
 
     int shortestWords = 0;
-    int i = 1; 
+    int temp = 1; 
     while (shortestWords<1)
     {        
         for (size_t j = 0; j < wordCount; j++)
         {
-            if (wordCounts[j].count==i)
+            if (wordCounts[j].count==temp)
             {
-                leastUsedWord[shortestWords] = wordCounts->word;
+                leastUsedWord[shortestWords] = wordCounts[j].word;
                 shortestWords++;
             }
-            
         }
-        i++;
-            
+        temp++;            
+    }
+
+    char **mostUsedWord = malloc(wordCount*MAX_WORD_LENGTH*sizeof(char));
+
+    temp = 1; 
+    mostUsedWord[0]=wordCounts[0].word;
+    while (wordCounts[temp].count == wordCounts[0].count)
+    {        
+        mostUsedWord[temp]=wordCounts[temp].word;
+        temp++;
     }
     
 
@@ -175,14 +183,29 @@ int main(int argc, char *argv[])
         printf("%-20s %i\n", wordCounts[i].word, wordCounts[i].count);
     }
     printf("%-20s %i\n", "Pocet slov:", wordCount);
-    printf("%-20s ", "Nejmene caste:");
+    printf("%-20s ", "Nejcastejsi:");
+    for (size_t i = 0; i < temp; i++)
+    {
+        printf("%s",mostUsedWord[i]);
+        if (i+1!=temp)
+        {
+            printf(" ");
+        }
+        
+    }
+    printf("\n%-20s ", "Nejmene caste:");
     for (size_t i = 0; i < shortestWords; i++)
     {
-        printf("%s ",leastUsedWord[i]);
+        printf("%s",leastUsedWord[i]);
+        if (i+1!=shortestWords)
+        {
+            printf(" ");
+        }
+        
     }
     
 
-
+    printf("\n");
     free(wordCounts);
 
     return 0;
